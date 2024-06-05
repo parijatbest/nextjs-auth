@@ -5,7 +5,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { verifyPassword } from "../../../lib/auth";
 import { connectToDatabase } from "../../../lib/db";
 
-export default NextAuth({
+export const authOptions = {
   session: {
     // jwt: true,
     strategy: "jwt",
@@ -39,9 +39,11 @@ export default NextAuth({
         }
 
         client.close();
-        return { email: user.email };
+        return { email: user.email, gmail: "test" };
       },
     }),
   ],
   secret: "LlKq6ZtYbr+hTC073mAmAh9/h2HwMfsFo4hrfCx5mLg=",
-});
+};
+
+export default NextAuth(authOptions);
