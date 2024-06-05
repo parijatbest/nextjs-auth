@@ -39,11 +39,31 @@ export const authOptions = {
         }
 
         client.close();
-        return { email: user.email, gmail: "test" };
+        return {
+          email: user.email,
+          gmail: "user.test@gmail.com",
+        };
       },
     }),
   ],
   secret: "LlKq6ZtYbr+hTC073mAmAh9/h2HwMfsFo4hrfCx5mLg=",
+  callbacks: {
+    jwt({ token, user }) {
+      if (user) {
+        return { ...token, email: user.email, gmail: user.gmail };
+      }
+      return token;
+    },
+    session: ({ session, token }) => {
+      return {
+        ...session,
+        user: {
+          email: session.user.email,
+          gmail: token.gmail ?? "invalid",
+        },
+      };
+    },
+  },
 };
 
 export default NextAuth(authOptions);
